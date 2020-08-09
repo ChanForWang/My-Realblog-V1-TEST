@@ -1,93 +1,75 @@
 {% extends "base.html" %}
+{% load static %}
+{% load filter_extra %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static "css/timeline.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/timeline1.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/animate.min.css" %}">
+
+{% endblock %}
+
+
+
+
 {% block content %}
 
 
-    <div id="main-container" class="container clearfix">
-        <section>
-            {% for li in list %}
-            <section class="post-left">
 
-                {% if forloop.counter == 1 %}
-                <div class="breadcrumb">您的位置： <a itemprop="breadcrumb" href="/">首页</a> » <span
-                        class="current">日记</span>
-                </div>
-                {% endif %}
+    <div class="doc-container" id="doc-container">
+         <div class="container-fixed">
+            <div class="timeline-box shadow">
+                <div class="timeline-main">
+                    <h1><i class="fa fa-clock-o"></i>日记</h1>
+                    <div class="timeline-line"></div>
 
-                <div class="index-main clearfix">
-                    {% if forloop.counter == 1 %}
-                    <div class="main-title">
-                        <h4 class="post-left-title">日记 <span style="color:rgb(65, 117, 214)">2020</span> <span class="fr">Total:{{ List|length }}篇</span></h4>
-                    </div>
-                    {% endif %}
+                        <!--按年归档-->
+                        {% for date in dates %}
+                        <div class="timeline-year">
+                            <h2><a class="yearToggle">{{ date.year }}</a><i class="fa fa-caret-down fa-fw"></i></h2>
+                            <div class="timeline-month">
 
-                    <div class="row">
-                        <div class="article-box clearfix excerpt-1">
-                            <div class="col-md-4">
-                                <div class="thumbnail">
-                                    <a href="{% url 'blog:index' %}show-{{ li.id }}.html" title="{{ li.title }}">
-                                        <img src="/media/{{ li.img }}" alt="{{ li.title }}"
-                                            class="wp-post-image" style="width:240px; height:180px" /></a>
-                                </div>
+                            <!--other method-->
+{#                                <ul>#}
+{#                                    {% for li in list %}#}
+{#                                    <li>#}
+{#                                        <div class="h4 animated fadeInLeft">#}
+{#                                            <p class="date">{{ li.created_time|date:"m月d日" }}</p>#}
+{#                                        </div>#}
+{#                                        <p class="dot-circle animated "><i class="fa fa-dot-circle-o"></i></p>#}
+{#                                        <div class="content animated fadeInRight">{{ li.content|safe }}</div>#}
+{#                                        <div class="clear"></div>#}
+{#                                    </li>#}
+{#                                    {% endfor %}#}
+{##}
+{#                                </ul>#}
+
+                                    {% for li in list %}
+                                    {% if li.created_time.year == date.year %}
+                                    <div class="cd-timeline-block">
+                                        <p class="dott-circle animated "><i class="fa fa-dot-circle-o"></i></p>
+                                        <div class="cd-timeline-content">
+                                            <h2>{{ li.title }}</h2>
+                                            <p>{{ li.content|safe }}</p>
+                                            <span class="cd-date" style="color: #484348;font-size: 1.1rem;opacity: 1">{{ li.created_time|date:"m月d日" }}</span>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                             </div>
 
-                            <div class="col-md-8">
-                                <h2><a href="{% url 'blog:index' %}show-{{ li.id }}.html" target="_blank"
-                                        title="{{ li.title }}">{{ li.title }}</a></h2>
-                                <p class="txtcont hidden-xs"><a href="{% url 'blog:index' %}show-{{ li.id }}.html" target="_blank"
-                                        title="{{ li.title }}">{{ li.excerpt|truncatechars:"100"  }}</a>
-                                </p>
-                                <div class="meta"><a class="category" href="{% url "blog:index" %}list-{{ li.category_id }}.html">{{ li.category.name }}</a>
-                                    <time class="item"><i class="fa fa-clock-o"></i>{{ li.created_time|date:"Y年m月d日" }}</time>
-                                    <span>阅读:{{ li.views }}</span>
-                                </div>
-                            </div>
                         </div>
-                    </div>
 
+                        {% endfor %}
+
+
+
+                    <h1 style="padding-top:4px;padding-bottom:2px;margin-top:40px;"><i class="fa fa-hourglass-end"></i>THE END</h1>
                 </div>
-            </section>
-            {% endfor %}
-
-
-
-
-            <div class="pagination">
-                <ul>
-                    {% if list.has_previous %}
-                    <li class="prev-page"><a href="?page={{ list.previous_page_number }}">上一页</a></li>
-                    {% else %}
-                     <li class="prev-page"></li>
-                    {% endif %}
-
-                    {% for num in list.paginator.page_range %}
-                        {% if num %}
-                            {% ifequal num list.number %}
-                                <li class="active"><span>{{ num }}</span></li>
-                            {% else %}
-                                <li><a href="?page={{ num }}">{{ num }}</a></li>
-                            {% endifequal %}
-                        {% else %}
-                            <li class="disabled"><span>...</span></li>
-                        {% endif %}
-                    {% endfor %}
-
-
-                    {% if list.has_next %}
-                        <li class="next-page"><a href="?page={{ list.next_page_number }}">下一页</a></li>
-                    {% else %}
-                        <li class="prev-page"></li>
-                    {% endif %}
-
-                </ul>
             </div>
-
-            <!-- /文章列表 -->
-        </section>
-
-
-      {% include "right.html" %}
-
+        </div>
     </div>
+
 
 
 
@@ -95,5 +77,54 @@
 
 
 
+
+
+    {% block script_extends %}
+       <script src="{% static "js/pagediary.js" %}"></script>
+
+
+        <!--真香的-->
+       <script src="{% static "js/scrollreveal.min.js" %}"></script>
+       <script src="{% static "js/bubble.js" %}"></script>
+
+    {% endblock %}
+
+
+
+    <!--真香的-->
+    {% block script_funtion_extens %}
+    <script>
+        layui.use(['element', 'layer'], function () {
+            var layer = layui.layer;
+            /**
+             * 滑动列表项特效
+             */
+            var slideUp = {
+                // duration : 500,
+                delay: 200,
+                distance: '20px',
+                easing: 'ease-in-out',
+                // rotate   : { z: 10 },
+                opacity: 0,
+                scale    : 1.2,
+                reset: true
+            };
+            window.scroll = ScrollReveal();
+            scroll.reveal('.cd-timeline-block', slideUp);
+
+            /*顶部加载条*/
+            window.onload = function () {
+                NProgress.done();
+            };
+
+            /**
+             * 点击图片预览
+             */
+            $(".cd-timeline-content img").click(function () {
+                layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .6, closeBtn: true});
+            });
+        });
+    </script>
+    {% endblock %}
 
 

@@ -30,7 +30,8 @@ def index(request):
 
 
 def blog(request):
-    Allarticle = Article.objects.exclude(category__name__icontains='日记').order_by('-id')  # ---最新文章：中间10篇文章
+    exclude_list = ['日记','感悟']
+    Allarticle = Article.objects.exclude(category__name__in=exclude_list).order_by('-id')  # ---最新文章：中间10篇文章
     tui = Article.objects.filter(tui__id=1).order_by("-id")[0:3]  # 拿推荐位id为1的3篇文章， 所以后台要设置 置顶推荐 的tui的id = 1
     # hot = Article.objects.all().order_by('-views()')[0:10]  # 通过浏览数进行排序， 提取出热门文章---右侧热门10篇文章排行
     allcategory = Category.objects.all()# 文章分类
@@ -74,7 +75,7 @@ def list(request, lid):
     except EmptyPage:
         list = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
 
-    return render(request, 'list.html',locals())
+    return render(request, 'list.html', locals())
 
 
 
@@ -139,7 +140,7 @@ def search(request):
 
 
     ss = request.GET.get('search')  # 获取搜索的关键词
-    List = Article.objects.filter(title__icontains=ss)  # 获取到搜索关键词通过标题进行匹配---找到对应的搜索文章
+    List = Article.objects.filter(title__icontains=ss).order_by('-created_time')  # 获取到搜索关键词通过标题进行匹配---找到对应的搜索文章
 
     page = request.GET.get('page')
     # tags = Tag.objects.all()
@@ -155,17 +156,14 @@ def search(request):
 
 
 
-def diary(request):
+def inspiration(request):
     tui = Article.objects.filter(tui__id=1).order_by("-id")[0:3]  # 拿推荐位id为1的3篇文章， 所以后台要设置 置顶推荐 的tui的id = 1
-    # hot = Article.objects.all().order_by("-views()")[0:10]  # 通过浏览数进行排序， 提取出热门文章---右侧热门10篇文章排行
     allcategory = Category.objects.all()  # 文章分类
     tags = Tag.objects.all()  # 文章标签
-
     # 右侧热门文章的逻辑(历史累计热门)
     hot = get_allTime_hot_data(Article)
 
-
-    List = Article.objects.filter(category__name='日记').order_by('-id')
+    List = Article.objects.filter(category__name='感悟').order_by('-id')
 
     page = request.GET.get('page')
     paginator = Paginator(List, 10)
@@ -175,11 +173,21 @@ def diary(request):
         list = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
     except EmptyPage:
         list = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-
-    return render(request, 'diary.html',locals())
+    return render(request, 'inspiration.html',locals())
 
 
 
 def about(request):
     return render(request, 'about.html',locals())
 
+
+def diary(request):
+    list = Article.objects.filter(category__name='日记').order_by('-created_time')
+    dates = Article.objects.filter(category__name='日记').datetimes('created_time', 'year', order='DESC')
+
+    # 下面两条如果用日和月归档的话，才用得上
+    date = Article.objects.filter(category__name='日记').datetimes('created_time', 'month', order='DESC')
+    dat = Article.objects.filter(category__name='日记').datetimes('created_time', 'day', order='DESC')
+
+
+    return render(request, 'diary.html', locals())

@@ -595,6 +595,30 @@ div#reply_content_container > p {
 	padding-bottom: 0.5em;
 }
 
+@media screen and (max-width: 1200px){
+	.col-other{display: none}
+	#main-container{width: 860px;}
+	aside{position: relative;right: 50%;transform:translateX(50%)}
+	/*.post-right{float: none}*/
+}
+@media screen and (max-width: 768px){
+	#main-container{width: 750px}
+}
+@media screen and (max-width: 414px) {
+	#main-container{width: 400px;}
+
+}
+@media screen and (max-width: 375px) {
+	#main-container{width: 360px}
+}
+@media screen and (max-width: 360px) {
+	#main-container{width: 340px;}
+	.post-left{width:340px!important;}
+}
+@media screen and (max-width: 320px) {
+	#main-container{width: 300px;}
+}
+
 
 
 

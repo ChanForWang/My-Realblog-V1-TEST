@@ -1,277 +1,282 @@
-﻿{% load static %}
+{% load static %}
+{% load filter_extra %}
 
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-
+<html lang="zh-Hans-CN">
 <head>
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="Author" content="禾斗">
-	<title>禾斗的小博客</title>
-	<meta name="description" content="这是禾斗的博客啊" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="这是禾斗的博客啊" />
 	<meta name="keywords" content="技术，博客，知识分享，互联网，前端，后端，网站" />
+    <meta name="Author" content="禾斗">
+    <title>禾斗的小博客</title>
 
-	<link rel="stylesheet" type="text/css" href='{% static "css/normalize.css" %}'/>
-	<link rel='stylesheet' type='text/css' href='{% static "css/145fa406e9a0406899070de74cd38aa6.css" %}'/>
-	<!--[if IE]>
-		<script src="static/js/html5.js"></script>
-		<![endif]-->
-	<link rel="stylesheet" type="text/css" href='{% static "css/styles.css" %}' />
+    <link href="{% static "layui/css/layui.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" type="text/css">
+    <link href="{% static "css/index_style.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/animate.min.css" %}" rel="stylesheet" type="text/css">
 </head>
-
 
 
 
 <body>
 
-	<header id="head">
-		<!-- id，canvas为星空，parallax为bg img-->
-		<div class="parallax" id="large-header">
-			<canvas id="demo-canvas"></canvas>
-		</div>
+    <!-- id，canvas为星空，parallax为bg img-->
+    <div class="parallax" id="large-header">
+        <canvas id="demo-canvas"></canvas>
+    </div>
 
 
-		<!-- navbar -->
-		<div class="navbar">
-			<input type='checkbox' id='sidemenu'>
-			<aside>
-				<ul id="sideul">
-					<a href="/">
-						<li>首页</li>
-					</a>
-					<a href="/blog/">
-						<li>个人博客</li>
-					</a>
-					<a href="/diary/">
-						<li>日记</li>
-					</a>
-					<a href="/about/">
-						<li>关于</li>
-					</a>
-					
-				</ul>
-			</aside>
 
-			<!-- narbar button -->
-			<div id='wrap'>
-				<label id='sideMenuControl' for='sidemenu'>≡</label>
-				<!--for 属性规定 label 与哪个表单元素绑定，即将这个控制侧边栏进出的按钮与checkbox绑定-->
-			</div>
-		</div>
-	</header>
+    <!--三横线导航栏-->
+    <div id="menu" class="hover_animation menu_open" data-mark="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div id="navgation" class="navgation navgation_close">
+        <ul class="point">
+            <li><a href="/">首页</a></li>
+            <li><a href="/blog/">个人博客</a></li>
+            <li><a href="/diary/">日记</a></li>
+            <li><a href="/about/">关于</a></li>
 
-	<section class="middle">
-		<div id="Content" class="wrapper">
+        </ul>
+        <div class="logo"><a>Mr.KH</a></div>
+    </div>
+    <!--三横线导航栏END-->
 
-			<div class="top-wrapper">
-				<div id="header">
-					<div class="wrapper">
-						<h1><a href="#" class="logo">KH-Blog</a></h1>
-					</div>
-				</div>
-				<span id="showsectime">网站已上线:</span>
 
-				<div class="countdown styled">
-					<div id="days"> <span>DAYS</span></div>
-					<div id="hours"> <span>HOURS</span></div>
-					<div id="minutes"> <span>MINUTES</span></div>
-					<div id="seconds"> <span>SECONDS</span></div>
-				</div>
-			</div>
+    <section class="section" id="section1">
+		<div id="Content" class="wow zoomIn page2 " data-wow-duration="2s">
+            <div  style="text-align: right;">
+                <h3><a href="/" class="main-logo">KH-Blog</a></h3>
+                <div class="top-wrapper">
+                    <p id="showsectime">网站已上线:</p>
+                    <div class="countdown">
+                        <div class="fline" id="days"> <span>DAYS</span></div>
+                        <div class="fline" id="hours"> <span>HOURS</span></div>
+                        <div class="sline" id="minutes"> <span>MINUTES</span></div>
+                        <div class="sline" id="seconds"> <span>SECONDS</span></div>
+                    </div>
+                </div>
 
-			<div class="bottom-wrapper wrapper">
-				<h2 class="intro">You don't have to be great to start, but you have to start to be
-					great.<br />你不一定要很厉害才能开始，你要开始才能很厉害</h2>
-				<div class="enter_blog">
-					<a href="/blog/">Enter Blog</a>
-				</div>
-			</div>
+                <div class="bottom-wrapper">
+                    <h2 class="intro"><span>You don't have to be great to start,</span><span> but you have to start to be
+                        great.</span><br /><span>你不一定要很厉害才能开始</span><span> 但你要开始才能很厉害</span></h2>
+                    <div class="enter_blog">
+                        <a class="layui-btn layui-btn-normal" href="/blog/">Enter Blog</a>
+                    </div>
+                </div>
 
-            <div onclick="scrollToView('next1')">
-                <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-arrow-down-short" fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg" class="arrow" id="arrow">
-                    <path fill-rule="evenodd"
-                        d="M4.646 7.646a.5.5 0 0 1 .708 0L8 10.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z" />
-                    <path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5z" />
-                </svg>
+
+                <div onclick="scrollToView('section2')">
+                    <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-arrow-down-short" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg" class="arrow" id="arrow">
+                        <path fill-rule="evenodd"
+                            d="M4.646 7.646a.5.5 0 0 1 .708 0L8 10.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z" />
+                        <path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                </div>
             </div>
 		</div>
-
 	</section>
 
 
-
-
-	<!-- 博客分类 -->
-	<section class="next1" id="next1">
-		<div class="container w">
-			<h3>博客分类</h3>
-			<div class="line"></div>
-			<p>每一个不曾起舞的日子，都是对生命的辜负</p>
-
-			<div class="articles">
-				<ul class="items">
-                    {% for category in allcategory %}
-					<li class="one fl" style="margin-right: 0.4em">
-						<a href="{% url 'blog:index' %}list-{{ category.id }}.html">
-							<img src="media/{{ category.img }}">
-							<div class="lower">
-
-                                    <h4>{{ category.name }}</h4>
-
-								<span
-									class="exerpt">{{ category.excerpt|truncatechars:"100"   }}</span>
-								<span class="more" style="display:block; position:absolute; bottom:1em">Read More</span>
-							</div>
-						</a>
-					</li>
-                    {% endfor %}
-				</ul>
-			</div>
-		</div>
-
-		<div class="parallax1" id="large-header">
-			<canvas id="demo-canvas"></canvas>
-		</div>
-
-	</section>
-
-
-
-	<section class="between w">
-		<span>Fake it till you make it</span>
-	</section>
-
-
-	<!-- 最新文章 -->
-	<section class="next2">
-		<div class="container w">
-			<h3>最新文章</h3>
-			<div class="line"></div>
-			<p>Life isn't about waiting for the storm to pass <br> It's about learning how to dance in the rain</p>
-
-
-			<div class="articles">
-				<ul class="items">
-                    {% for article in allarticle %}
-					<li class="one fl" style="margin-right: 0.4em">
-						<a href="{% url 'blog:index' %}show-{{ article.id }}.html">
-							<img src="media/{{ article.img }}">
-							<div class="lower">
-								<span class="title">{{ article.title }}</span>
-								<h4>{{ article.category }}</h4>
-								<time class="time"><i class="fa fa-clock-o"></i>{{ article.create_time|date:"Y年m月d日" }}</time>
-								<span
-									class="exerpt">{{ article.excerpt|truncatechars:"100"  }}</span>
-								<span class="more" style="display :block; position : absolute; bottom : 1em">Read More</span>
-							</div>
-						</a>
-					</li>
-                    {% endfor %}
-				</ul>
-			</div>
-		</div>
-
-		<div class="parallax2" id="large-header">
-			<canvas id="demo-canvas"></canvas>
-		</div>
-
-	</section>
-
-	<section class="between w">
-		<span style="color: rgb(122, 30, 158);line-height: 550px; font-size: 100px;">Just do it</span>
-	</section>
-
-
-
-
-	<!-- 3333 -->
-	<section class="next3">
-        <div class="readNum">
-            <!-- 图表容器 DOM -->
-            <div id="container"></div>
-            <!-- 引入 highcharts.js -->
-            <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
-            <script>
-                var chart = Highcharts.chart('container', {
-                    chart: {type: 'line',},
-                    title: {text: null},
-                    subtitle: {text: null},
-                    xAxis: {
-                        categories: {{ dates|safe }},
-                        tickmarkPlacement:'on',
-                        title: { text: 'Views of Last 7 Days' }
-                    },
-                    yAxis: {
-                        title: {text: null},
-                        labels:{enabled:false},
-                        gridLineDashStyle:'Dash',
-                    },
-                    series: [{
-                        name: '阅读量',
-                        data: {{ read_nums }},
-                    }],
-                    plotOptions: {
-                      line: {
-                          dataLabels: { enabled:true }
-                      }
-                    },
-                    legend:{enabled:false},
-                    credits:{enabled:false},
-                });
-            </script>
+    <!--博客分类-->
+    <div class="section" id="section2">
+        <div class="fp-tablecell">
+            <div class="page2">
+                <div class="warp-box">
+                    <div class="new-article">
+                        <div class="inner wow fadeInDown" data-wow-delay=".2s">
+                            <h1>博客分类</h1>
+                            <p>每一个不曾起舞的日子，都是对生命的辜负</p>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        {% for category in allcategory %}
+                            <div id="startA" class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" data-wow-delay="{{ forloop.counter0|multi:0.2 }}s" style="padding: 0 10px">
+                                <div class="single-news">
+                                    <div class="news-head">
+                                        <a href="{% url 'blog:index' %}list-{{ category.id }}.html"><img src="media/{{ category.img }}"></a>
+                                    </div>
+                                    <div class="news-content">
+                                        <h3><a href="{% url 'blog:index' %}list-{{ category.id }}.html">{{ category.name }}</a></h3>
+                                        <p>{{ category.excerpt|truncatechars:"100"   }}</p>
+                                        <a href="{% url 'blog:index' %}list-{{ category.id }}.html" class="btn">阅读更多</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
+
+
+    <!--分割-->
+    <div class="section" id="section3">
+        <div class="fp-tablecell">
+            <div class="page2 between">
+                <span>Fake it till you make it</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--最新文章-->
+    <div class="section" id="section2">
+        <div class="fp-tablecell">
+            <div class="page2">
+                <div class="warp-box">
+                    <div class="new-article">
+                        <div class="inner wow fadeInDown" data-wow-delay=".2s">
+                            <h1>最新文章</h1>
+                            <p>Life isn't about waiting for the storm to pass <br> It's about learning how to dance in the rain</p>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        {% for article in allarticle %}
+                        <div class="layui-col-xs12 layui-col-sm4 layui-col-md4  wow fadeInUp" data-wow-delay="{{ forloop.counter0|multi:0.2 }}s" style="padding: 0 10px">
+                            <div class="single-news">
+                                <div class="news-head">
+                                    <a href="{% url 'blog:index' %}show-{{ article.id }}.html"><img src="media/{{ article.img }}"></a>
+                                </div>
+                                <div class="news-content">
+                                    <h3><a href="{% url 'blog:index' %}list-{{ category.id }}.html">{{ article.title }}</a></h3>
+                                    <div class="date">{{ article.create_time|date:"Y年m月d日" }}</div>
+                                    <p>{{ article.excerpt|truncatechars:"100"  }}</p>
+                                    <a href="{% url 'blog:index' %}show-{{ article.id }}.html" class="btn">阅读更多</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--关于-->
+    <div class="section" id="section3">
+        <div class="fp-tablecell">
+            <div class="page3">
+                <div class="warp-box">
+                    <div class="warp">
+                        <div class="inner">
+                            <div class="links">
+                                <ul>
+                                    <li class="wow fadeInLeft"><a href="/about/">关于</a></li>
+                                    <li class="wow fadeInRight"><a href="#">+友情链接</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section" id="section4">
+        <div class="fp-tablecell">
+            <div class="page4">
+                <div class="warp-box">
+                    <div class="about">
+                        <div class="inner">
+                            <h1 class="wow fadeInLeft">禾 Love Life 斗</h1>
+                            <p class="wow fadeInRight">
+                                Kobe Bryant--Mamba Mentality<br>
+                                你见过凌晨4点的洛杉矶吗
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer wow fadeInUp" id="contact">
+        <div class="footer-top">
+            <div class="container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+                        <div class="single-widget about">
+                            <div class="footer-logo">
+                                <h2>禾斗</h2>
+                            </div>
+                            <p>贵有恒，何必三更起五更睡<br>
+                            最无益，只怕一日曝十日寒</p>
+                            <div class="button">
+                                <a href="/about/" class="btn layui-btn layui-btn-normal">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-sm6 layui-col-md4">
+                        <div class="single-widget">
+                            <h2>相关链接</h2>
+                            <ul class="social-icon">
+                                <li class="active"><a href="/blog/"><i class="fa fa-book"></i>博文</a></li>
+                                <li class="active"><a href="/inspiration/"><i class="fa fa-comments"></i>感悟</a></li>
+                                <li class="active"><a href="/diary/"><i class="fa fa-snowflake-o"></i>日记</a></li>
+                                <li class="active"><a href="/about/"><i class="fa fa-files-o"></i>关于</a></li>
+                            </ul>                   
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md4">
+                        <div class="single-widget contact">
+                            <h2>联系我</h2>
+                            <ul class="list">
+{#                                <li><i class="fa fa-map"></i>地址: 四川成都金牛区金科北路39号</li>#}
+                                <li><i class="fa fa-qq"></i>QQ: 504344958 </li>
+                                <li><i class="fa fa-envelope"></i>邮箱: jameschan0305@gmail.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 text-center">
+                        <p>Copyright &copy; 2018-2018 燕十三 All Rights Reserved V.3.1.3 蜀ICP备18008600号</p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </footer>
 
 
 
 
 
-		<div class="container w">
-			<h3>欢迎关注<a onclick="scrollToView('head')" style="cursor: pointer"><span>James-Blog</span></a></h3>
-			<div class="line"></div>
-			<p>Life isn't about waiting for the storm to pass <br> It's about learning how to dance in the rain</p>
-		</div>
-	</section>
+    <!--===================================Scripts=============================================-->
+    <script src="{% static "layui/layui.js" %}"></script>
+    <script src="{% static "js/wow.min.js"%}"></script>
+    <script src="{% static "js/index.js" %}"></script>
 
 
 
 
+    <!--星空的JS-->
+	<script src="{% static "js/tweenlite.min.js" %}"></script>
+	<script src="{% static "js/easepack.min.js" %}"></script>
+	<script src="{% static "js/raf.js" %}"></script>
+	<script src="{% static "js/demo-1.js" %}"></script>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<script src="static/js/tweenlite.min.js"></script>
-	<script src="static/js/easepack.min.js"></script>
-	<script src="static/js/raf.js"></script>
-	<script src="static/js/demo-1.js"></script>
-
-
-	<!--Scripts-->
-	<script type="text/javascript" src="static/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="static/js/backstretch.js"></script>
-	<script type="text/javascript" src="static/js/jquery.countdown.js"></script>
-	<script type="text/javascript" src="static/js/global.js"></script>
+	<script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.countdown.js" %}"></script>
 
 
     <script>
@@ -323,6 +328,6 @@
     </script>
 
 
-</body>
 
+</body>
 </html>

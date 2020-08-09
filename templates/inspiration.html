@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load comment_tags %}
+{% block content %}
+
+
+
+    <div class="doc-container" id="doc-container">
+        <div class="container-fixed">
+		    <div class="col-content">
+		        <div class="inner">
+		            <article class="article-list bloglist" id="LAY_bloglist" >
+                        {% for li in list %}
+
+
+                            {% if forloop.counter == 1 %}
+                            <div class="breadcrumb" style="margin-top: 1rem">
+                                您的位置： <a itemprop="breadcrumb" href="/" style="color: #00a0e9">首页</a> » <span class="current">感悟</span>
+                            </div>
+                            {% endif %}
+
+						<section class="article-item zoomIn article">
+
+                            {% if forloop.counter == 1 %}
+                            <div class="main-title">
+                                <h4 class="post-left-title">感悟 <span style="color:rgb(65, 117, 214)">2020</span><span style="margin-left: 0.5rem">(Total:{{ List|length }}篇)</span></h4>
+                            </div>
+							<div class="fc-flag">头条</div>
+                            {% endif %}
+
+
+							<h5 class="title">       
+								<span class="fc-blue">【原创】</span>       
+								<a href="{% url 'blog:index' %}show-{{ li.id }}.html">{{ li.title }}</a>
+							</h5>   
+							<div class="time">       
+								<span class="day">{{ li.created_time|date:"d" }}</span>
+								<span class="month fs-18">{{ li.created_time|date:"m" }}<span class="fs-14">月</span></span>
+								<span class="year fs-18 ml10">{{ li.created_time|date:"Y" }}</span>
+							</div>   
+							<div class="content">       
+								<a href="{% url 'blog:index' %}show-{{ li.id }}.html" class="cover img-light">
+									<img href="/media/{{ li.img }}" srcset="/media/{{ li.img }}" alt="{{ li.title}}"/>
+								</a>
+								<p style="font-size: 1.3rem">{{ li.excerpt|truncatechars:"100" }}</p>
+							</div>   
+							<div class="read-more">       
+								<a href="{% url 'blog:index' %}show-{{ li.id }}.html" class="fc-black f-fwb">继续阅读</a>
+							</div>    
+							<aside class="f-oh footer">       
+								<div class="f-fl tags">           
+									<span class="fa fa-tags fs-16"></span>           
+									<a class="tag" href="{% url "blog:index" %}list-{{ li.category_id }}.html">{{ li.category.name }}</a>
+								</div>       
+								<div class="f-fr">           
+									<span class="read">               
+										<i class="fa fa-eye fs-16"></i>               
+										<i class="num">{{ li.views }}</i>
+									</span>
+									<span class="ml20">               
+										<i class="fa fa-comments fs-16"></i>               
+										<a href="{% url 'blog:index' %}show-{{ li.id }}.html" class="num fc-grey">{% get_comment_count li %}</a>
+									</span>       
+								</div>   
+							</aside>
+						</section>
+
+                        {% endfor %}
+
+		            </article>
+		        </div>
+		    </div>
+
+
+
+            <!--=========底部分页！-->
+            <div class="pagination">
+                <ul>
+                    {% if list.has_previous %}
+                        <li class="prev-page"><a href="?page={{ list.previous_page_number }}">上一页</a></li>
+                    {% else %}
+                        <li class="prev-page"></li>
+                    {% endif %}
+
+                     {% for num in list.paginator.page_range %}
+                        {% if num %}
+                            {% ifequal num list.number %}
+                                 <li class="active"><span>{{ num }}</span></li>
+                            {% else %}
+                                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li class="disabled"><span>...</span></li>
+                        {% endif %}
+                     {% endfor %}
+
+                    {% if list.has_next %}
+                        <li class="next-page"><a href="?page={{ list.next_page_number }}">下一页</a></li>
+                    {% else %}
+                        <li class="prev-page"></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+            <!--=========右侧共有导航栏！-->
+		    {% include "right.html" %}
+
+		</div>
+    </div>
+
+{% endblock %}
+

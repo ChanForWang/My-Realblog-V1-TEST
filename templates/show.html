@@ -3,8 +3,11 @@
 {% load comment_tags %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static "css/style.css" %}" />
+
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -82,6 +85,8 @@
 
                 </ul>
             </div>
+
+
 
             <div class="comment">
                 <div class="head clearfix head_top">
@@ -168,7 +173,12 @@
 
 {% endblock %}
 
-{% block script_extends %}
+
+
+
+
+
+{% block script_funtion_extens %}
     <script type="text/javascript">
         $("#comment_form").submit(function() {
             //判断评论框是否为空
@@ -219,6 +229,7 @@
             });
             return false;
         });
+
         function reply(reply_comment_id) {
             //设置值
             $('#reply_comment_id').val(reply_comment_id);
@@ -226,20 +237,26 @@
             $('#reply_content').html(html);
             $('#reply_content_container').show();
 
-            $('body').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function() {
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function() {
                 CKEDITOR.instances['id_comment_text'].focus();
             });
         };
+
+
+
         function want_comment() {
-            $('body').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function() {
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function() {
                 CKEDITOR.instances['id_comment_text'].focus();
             });
         };
+
+
         function clear_data() {
             if(CKEDITOR.instances["id_comment_text"].document.getBody().getText().trim() !='') {
                 CKEDITOR.instances["id_comment_text"].setData('');
             }
         };
+
         /*
         function numFormat(num) {
             return ('00' + num).substr(-2);

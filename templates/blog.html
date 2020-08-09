@@ -1,59 +1,77 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load comment_tags %}
 
 {% block content %}
-    <div id="main-container" class="container clearfix">
 
-        <!-- 文章 -->
-        <section>
-{#            <div class="main-title post-left" style="background-color: white; margin-bottom: 0">#}
-{#                <h4 class="post-left-title fl" style="margin-left: -1px; line-height: 29px">全部文章</h4>#}
-{#                <div class="fr"></div>#}
-{#            </div>#}
 
-            {% for article in allarticle %}
-            <section class="post-left">
-                <!-- /文章列表 -->
-                <div class="index-main clearfix">
+<!--content=================================================-->
+    <div class="doc-container" id="doc-container">
+        <div class="container-fixed">
+		    <div class="col-content">
+		        <div class="inner">
+		            <article class="article-list bloglist" id="LAY_bloglist" >
 
-                    {% if forloop.counter == 1 %}
-                        <div class="main-title">
-                            <h4 class="post-left-title ">全部文章<span class="fr">Total:{{ Allarticle|length }}篇</span></h4>
-                        </div>
-                    {% endif %}
+                        {% for article in allarticle %}
+						<section class="article-item zoomIn article">
 
-                    <div class="row">
-                        <div class="article-box clearfix excerpt-1">
-                            <div class="col-md-4">
-                                <div class="thumbnail">
-                                    <a href='{% url "blog:index" %}show-{{ article.id }}.html'  title="{{ article.title }}">
-                                        <img src="/media/{{ article.img }}" srcset="/media/{{ article.img }}"
-                                             alt="{{ article.title}}" class="wp-post-image" style="width:240px; height:180px" />
-                                    </a>
+
+                            {% if forloop.counter == 1 %}
+                                <div class="main-title">
+                                    <h4 class="post-left-title ">全部文章<span style="margin-left: 0.5rem">(Total:{{ Allarticle|length }}篇)</span></h4>
                                 </div>
-                            </div>
 
-                            <div class="col-md-8">
-                                <h2><a href='{% url "blog:index" %}show-{{ article.id }}.html' target="_blank"
-                                        title="{{ article.title }}">{{ article.title }}</a></h2>
-                                <p class="txtcont hidden-xs"><a href='{% url "blog:index" %}show-{{ article.id }}.html' target="_blank"
-                                        title="{{ article.title }}">{{ article.excerpt|truncatechars:"100" }}</a>
-                                </p>
-                                <div class="meta">
-                                    <a class="category" href='{% url "blog:index" %}list-{{ article.category_id }}.html'>{{ article.category.name }}</a>
-                                    <time class="item"><i class="fa fa-clock-o"></i>{{ article.created_time|date:"Y年m月d日" }}</time>
-                                    <span style="margin-right: 10px;">阅读:{{ article.views }}</span>
-                                    <span>评论:{% get_comment_count article %}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {% endfor %}
+							<div class="fc-flag">头条</div>
+                            {% endif %}
 
 
-            {# 分页#}
+
+							<h3 class="title">
+								<span class="fc-blue">【原创】</span>       
+								<a href="{% url "blog:index" %}show-{{ article.id }}.html">{{ article.title }}</a>
+							</h3>
+
+							<div class="time">       
+								<span class="day">{{ article.created_time|date:"d" }}</span>
+								<span class="month fs-18">{{ article.created_time|date:"m" }}<span class="fs-14">月</span></span>
+								<span class="year fs-18 ml10">{{ article.created_time|date:"Y" }}</span>
+							</div>
+
+							<div class="content">       
+								<a href="{% url "blog:index" %}show-{{ article.id }}.html" class="cover img-light">
+									<img src="/media/{{ article.img }}" srcset="/media/{{ article.img }}" alt="{{ article.title}}">
+								</a>
+								<p style="font-size: 1.3rem">{{ article.excerpt|truncatechars:"100" }}</p>
+							</div>   
+							<div class="read-more">       
+								<a href="{% url "blog:index" %}show-{{ article.id }}.html" class="fc-black f-fwb">继续阅读</a>
+							</div>    
+							<aside class="f-oh footer">       
+								<div class="f-fl tags">           
+									<span class="fa fa-tags fs-16"></span>           
+									<a class="tag" href="{% url "blog:index" %}list-{{ article.category_id }}.html">{{ article.category.name }}</a>
+								</div>       
+								<div class="f-fr">           
+									<span class="read">               
+										<i class="fa fa-eye fs-16"></i>               
+										<i class="num">{{ article.views }}</i>
+									</span>           
+									<span class="ml20">               
+										<i class="fa fa-comments fs-16"></i>               
+										<a href="javascript:void(0)" class="num fc-grey">{% get_comment_count article %}</a>
+									</span>       
+								</div>   
+							</aside>
+						</section>
+
+                        {% endfor %}
+
+		            </article>
+
+		        </div>
+		    </div>
+
+
+            <!--=========底部分页！-->
             <div class="pagination">
                 <ul>
                     {% if allarticle.has_previous %}
@@ -83,33 +101,18 @@
                 </ul>
             </div>
 
-        </section>
 
 
 
-        {% include "right.html" %}
 
 
-        <!-- 友链 -->
-        <!-- <div class="FriendLink hidden-xs clearfix">
-            <div class="title">
-                <h3>友情链接：</h3>
-            </div>
-            <ul class="clears">
 
-                <li><a href="https://www.django.cn/" target="_blank">Django中文网</a></li>
+            <!--=========右侧共有导航栏！-->
+		    {% include "right.html" %}
 
-                <li><a href="https://www.django.cn/" target="_blank">django</a></li>
-
-                <li><a href="https://www.python.top" target="_blank">PythonTOP</a></li>
-
-                <li><a href="https://www.django.cn/course/" target="_blank">Django教程</a></li>
-
-                <li><a href="https://www.django.cn/forum/" target="_blank">Django社区</a></li>
-
-            </ul>
-        </div> -->
+		</div>
     </div>
 
 {% endblock %}
+
 

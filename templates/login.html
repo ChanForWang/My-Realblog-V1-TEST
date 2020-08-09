@@ -1,29 +1,30 @@
 {% extends "base.html" %}
+{% load static %}
+{% block head %}
+    <style>
+        @media screen and (max-width: 1024px){
+            form.layui-form{position: absolute!important;left: 50% !important}
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div class="container login_form" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%)">
-        <div class="row" >
-                <div class="col-xs-4 col-xs-offset-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">登录</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form method="POST" action=" ">
-                                {% csrf_token %}
-                                {% for field in login_form %}
-                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                    {{ field }}
-                                    <p class="text-danger">{{ field.errors.as_text }}</p>
-                                {% endfor %}
-                                <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
-                                <input type="submit" value="登录" class="btn btn-primary pull-right" style="margin-top: 10px">
-                            </form>
-                        </div>
-                    </div>
-
-
+    <div style="height:300px; margin-top: 250px;margin-bottom: 292px; padding: 30px; padding-top: 108px; border-radius: 30px">
+        <form class="layui-form" method="POST" action=" " style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);background-color: white;padding: 10px 30px;border-radius: 20px;">
+            {% csrf_token %}
+            <div class="layui-form-item"style="margin-top: 20px">
+                {% for field in login_form %}
+                <label for="{{ field.id_for_label }}" >{{ field.label }}</label>
+                <div class="layui-input-block" style="margin-left: 0;">
+                    {{ field }}
+                    <p class="text-danger">{{ field.errors.as_text }}</p>
                 </div>
-        </div>
+                {% endfor %}
+                <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
+                <input type="submit" value="登录" class="layui-btn layui-btn-normal pull-right" style="margin-top: 20px;border-radius: 20px">
+            </div>
 
+        </form>
     </div>
+
 {% endblock %}

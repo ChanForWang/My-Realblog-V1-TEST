@@ -27,8 +27,8 @@ urlpatterns = [
     path('comment/', include('comment.urls')),
     path('user/', include('user.urls')),
 
-    path('ueditor/', include('DjangoUeditor.urls')), #添加DjangoUeditor的URL
-    re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}), #确保在admin后台使用富文本编辑器时，能正常上传图片和files
+        path('ueditor/', include('DjangoUeditor.urls')), #添加DjangoUeditor的URL
+        re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}), #确保在admin后台使用富文本编辑器时，能正常上传图片和files
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
