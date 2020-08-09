@@ -1,0 +1,115 @@
+﻿{% extends "base.html" %}
+{% load comment_tags %}
+
+{% block content %}
+    <div id="main-container" class="container clearfix">
+
+        <!-- 文章 -->
+        <section>
+{#            <div class="main-title post-left" style="background-color: white; margin-bottom: 0">#}
+{#                <h4 class="post-left-title fl" style="margin-left: -1px; line-height: 29px">全部文章</h4>#}
+{#                <div class="fr"></div>#}
+{#            </div>#}
+
+            {% for article in allarticle %}
+            <section class="post-left">
+                <!-- /文章列表 -->
+                <div class="index-main clearfix">
+
+                    {% if forloop.counter == 1 %}
+                        <div class="main-title">
+                            <h4 class="post-left-title ">全部文章<span class="fr">Total:{{ Allarticle|length }}篇</span></h4>
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="article-box clearfix excerpt-1">
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <a href='{% url "blog:index" %}show-{{ article.id }}.html'  title="{{ article.title }}">
+                                        <img src="/media/{{ article.img }}" srcset="/media/{{ article.img }}"
+                                             alt="{{ article.title}}" class="wp-post-image" style="width:240px; height:180px" />
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <h2><a href='{% url "blog:index" %}show-{{ article.id }}.html' target="_blank"
+                                        title="{{ article.title }}">{{ article.title }}</a></h2>
+                                <p class="txtcont hidden-xs"><a href='{% url "blog:index" %}show-{{ article.id }}.html' target="_blank"
+                                        title="{{ article.title }}">{{ article.excerpt|truncatechars:"100" }}</a>
+                                </p>
+                                <div class="meta">
+                                    <a class="category" href='{% url "blog:index" %}list-{{ article.category_id }}.html'>{{ article.category.name }}</a>
+                                    <time class="item"><i class="fa fa-clock-o"></i>{{ article.created_time|date:"Y年m月d日" }}</time>
+                                    <span style="margin-right: 10px;">阅读:{{ article.views }}</span>
+                                    <span>评论:{% get_comment_count article %}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endfor %}
+
+
+            {# 分页#}
+            <div class="pagination">
+                <ul>
+                    {% if allarticle.has_previous %}
+                        <li class="prev-page"><a href="?page={{ allarticle.previous_page_number }}">上一页</a></li>
+                    {% else %}
+                        <li class="prev-page"></li>
+                    {% endif %}
+
+                     {% for num in allarticle.paginator.page_range %}
+                        {% if num %}
+                            {% ifequal num allarticle.number %}
+                                 <li class="active"><span>{{ num }}</span></li>
+                            {% else %}
+                                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li class="disabled"><span>...</span></li>
+                        {% endif %}
+                     {% endfor %}
+
+                    {% if allarticle.has_next %}
+                        <li class="next-page"><a href="?page={{ allarticle.next_page_number }}">下一页</a></li>
+                    {% else %}
+                        <li class="prev-page"></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+        </section>
+
+
+
+        {% include "right.html" %}
+
+
+        <!-- 友链 -->
+        <!-- <div class="FriendLink hidden-xs clearfix">
+            <div class="title">
+                <h3>友情链接：</h3>
+            </div>
+            <ul class="clears">
+
+                <li><a href="https://www.django.cn/" target="_blank">Django中文网</a></li>
+
+                <li><a href="https://www.django.cn/" target="_blank">django</a></li>
+
+                <li><a href="https://www.python.top" target="_blank">PythonTOP</a></li>
+
+                <li><a href="https://www.django.cn/course/" target="_blank">Django教程</a></li>
+
+                <li><a href="https://www.django.cn/forum/" target="_blank">Django社区</a></li>
+
+            </ul>
+        </div> -->
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,328 @@
+﻿{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Author" content="禾斗">
+	<title>禾斗的小博客</title>
+	<meta name="description" content="这是禾斗的博客啊" />
+	<meta name="keywords" content="技术，博客，知识分享，互联网，前端，后端，网站" />
+
+	<link rel="stylesheet" type="text/css" href='{% static "css/normalize.css" %}'/>
+	<link rel='stylesheet' type='text/css' href='{% static "css/145fa406e9a0406899070de74cd38aa6.css" %}'/>
+	<!--[if IE]>
+		<script src="static/js/html5.js"></script>
+		<![endif]-->
+	<link rel="stylesheet" type="text/css" href='{% static "css/styles.css" %}' />
+</head>
+
+
+
+
+<body>
+
+	<header id="head">
+		<!-- id，canvas为星空，parallax为bg img-->
+		<div class="parallax" id="large-header">
+			<canvas id="demo-canvas"></canvas>
+		</div>
+
+
+		<!-- navbar -->
+		<div class="navbar">
+			<input type='checkbox' id='sidemenu'>
+			<aside>
+				<ul id="sideul">
+					<a href="/">
+						<li>首页</li>
+					</a>
+					<a href="/blog/">
+						<li>个人博客</li>
+					</a>
+					<a href="/diary/">
+						<li>日记</li>
+					</a>
+					<a href="/about/">
+						<li>关于</li>
+					</a>
+					
+				</ul>
+			</aside>
+
+			<!-- narbar button -->
+			<div id='wrap'>
+				<label id='sideMenuControl' for='sidemenu'>≡</label>
+				<!--for 属性规定 label 与哪个表单元素绑定，即将这个控制侧边栏进出的按钮与checkbox绑定-->
+			</div>
+		</div>
+	</header>
+
+	<section class="middle">
+		<div id="Content" class="wrapper">
+
+			<div class="top-wrapper">
+				<div id="header">
+					<div class="wrapper">
+						<h1><a href="#" class="logo">KH-Blog</a></h1>
+					</div>
+				</div>
+				<span id="showsectime">网站已上线:</span>
+
+				<div class="countdown styled">
+					<div id="days"> <span>DAYS</span></div>
+					<div id="hours"> <span>HOURS</span></div>
+					<div id="minutes"> <span>MINUTES</span></div>
+					<div id="seconds"> <span>SECONDS</span></div>
+				</div>
+			</div>
+
+			<div class="bottom-wrapper wrapper">
+				<h2 class="intro">You don't have to be great to start, but you have to start to be
+					great.<br />你不一定要很厉害才能开始，你要开始才能很厉害</h2>
+				<div class="enter_blog">
+					<a href="/blog/">Enter Blog</a>
+				</div>
+			</div>
+
+            <div onclick="scrollToView('next1')">
+                <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-arrow-down-short" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg" class="arrow" id="arrow">
+                    <path fill-rule="evenodd"
+                        d="M4.646 7.646a.5.5 0 0 1 .708 0L8 10.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z" />
+                    <path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5z" />
+                </svg>
+            </div>
+		</div>
+
+	</section>
+
+
+
+
+	<!-- 博客分类 -->
+	<section class="next1" id="next1">
+		<div class="container w">
+			<h3>博客分类</h3>
+			<div class="line"></div>
+			<p>每一个不曾起舞的日子，都是对生命的辜负</p>
+
+			<div class="articles">
+				<ul class="items">
+                    {% for category in allcategory %}
+					<li class="one fl" style="margin-right: 0.4em">
+						<a href="{% url 'blog:index' %}list-{{ category.id }}.html">
+							<img src="media/{{ category.img }}">
+							<div class="lower">
+
+                                    <h4>{{ category.name }}</h4>
+
+								<span
+									class="exerpt">{{ category.excerpt|truncatechars:"100"   }}</span>
+								<span class="more" style="display:block; position:absolute; bottom:1em">Read More</span>
+							</div>
+						</a>
+					</li>
+                    {% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="parallax1" id="large-header">
+			<canvas id="demo-canvas"></canvas>
+		</div>
+
+	</section>
+
+
+
+	<section class="between w">
+		<span>Fake it till you make it</span>
+	</section>
+
+
+	<!-- 最新文章 -->
+	<section class="next2">
+		<div class="container w">
+			<h3>最新文章</h3>
+			<div class="line"></div>
+			<p>Life isn't about waiting for the storm to pass <br> It's about learning how to dance in the rain</p>
+
+
+			<div class="articles">
+				<ul class="items">
+                    {% for article in allarticle %}
+					<li class="one fl" style="margin-right: 0.4em">
+						<a href="{% url 'blog:index' %}show-{{ article.id }}.html">
+							<img src="media/{{ article.img }}">
+							<div class="lower">
+								<span class="title">{{ article.title }}</span>
+								<h4>{{ article.category }}</h4>
+								<time class="time"><i class="fa fa-clock-o"></i>{{ article.create_time|date:"Y年m月d日" }}</time>
+								<span
+									class="exerpt">{{ article.excerpt|truncatechars:"100"  }}</span>
+								<span class="more" style="display :block; position : absolute; bottom : 1em">Read More</span>
+							</div>
+						</a>
+					</li>
+                    {% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="parallax2" id="large-header">
+			<canvas id="demo-canvas"></canvas>
+		</div>
+
+	</section>
+
+	<section class="between w">
+		<span style="color: rgb(122, 30, 158);line-height: 550px; font-size: 100px;">Just do it</span>
+	</section>
+
+
+
+
+	<!-- 3333 -->
+	<section class="next3">
+        <div class="readNum">
+            <!-- 图表容器 DOM -->
+            <div id="container"></div>
+            <!-- 引入 highcharts.js -->
+            <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+            <script>
+                var chart = Highcharts.chart('container', {
+                    chart: {type: 'line',},
+                    title: {text: null},
+                    subtitle: {text: null},
+                    xAxis: {
+                        categories: {{ dates|safe }},
+                        tickmarkPlacement:'on',
+                        title: { text: 'Views of Last 7 Days' }
+                    },
+                    yAxis: {
+                        title: {text: null},
+                        labels:{enabled:false},
+                        gridLineDashStyle:'Dash',
+                    },
+                    series: [{
+                        name: '阅读量',
+                        data: {{ read_nums }},
+                    }],
+                    plotOptions: {
+                      line: {
+                          dataLabels: { enabled:true }
+                      }
+                    },
+                    legend:{enabled:false},
+                    credits:{enabled:false},
+                });
+            </script>
+        </div>
+
+
+
+
+
+		<div class="container w">
+			<h3>欢迎关注<a onclick="scrollToView('head')" style="cursor: pointer"><span>James-Blog</span></a></h3>
+			<div class="line"></div>
+			<p>Life isn't about waiting for the storm to pass <br> It's about learning how to dance in the rain</p>
+		</div>
+	</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<script src="static/js/tweenlite.min.js"></script>
+	<script src="static/js/easepack.min.js"></script>
+	<script src="static/js/raf.js"></script>
+	<script src="static/js/demo-1.js"></script>
+
+
+	<!--Scripts-->
+	<script type="text/javascript" src="static/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="static/js/backstretch.js"></script>
+	<script type="text/javascript" src="static/js/jquery.countdown.js"></script>
+	<script type="text/javascript" src="static/js/global.js"></script>
+
+
+    <script>
+        function scrollToView (id_location) {
+            document.getElementById(id_location).scrollIntoView({
+                block: 'start',
+                inline: 'nearest',
+                behavior: 'smooth'
+            })
+        }
+    </script>
+
+	<script>
+		function NewDate(str) {
+			str = str.split('-');
+			var date = new Date();
+			date.setUTCFullYear(str[0], str[1] - 1, str[2]);
+			// alert(date)
+			date.setUTCHours(16, 0, 0, 0);
+			// alert(date)
+			return date;
+		}
+
+		function showsectime() {
+			var birthDay = NewDate("2020-08-01");
+			var today = new Date();
+			var timeold = today.getTime() - birthDay.getTime();
+			var sectimeold = timeold / 1000
+			var secondsold = Math.floor(sectimeold);
+			var msPerDay = 24 * 60 * 60 * 1000;
+			var e_daysold = timeold / msPerDay;
+			var daysold = Math.floor(e_daysold);
+			var e_hrsold = (daysold - e_daysold) * -24;
+			var hrsold = Math.floor(e_hrsold);
+			var e_minsold = (hrsold - e_hrsold) * -60;
+			var minsold = Math.floor((hrsold - e_hrsold) * -60);
+			var seconds = Math.floor((minsold - e_minsold) * -60).toString();
+			document.getElementById("days").innerHTML = daysold + "<span>DAYS</span>";
+			document.getElementById("hours").innerHTML = hrsold + "<span>HOURS</span>";
+			document.getElementById("minutes").innerHTML = minsold + "<span>MINUTES</span>";
+			document.getElementById("seconds").innerHTML = seconds + " <span>SECONDS</span>";
+			setTimeout(showsectime, 1000);
+		}
+		showsectime();
+	</script>
+
+    <script>
+        document.getElementsByTagName("rect").fill = "none";
+    </script>
+
+
+</body>
+
+</html>

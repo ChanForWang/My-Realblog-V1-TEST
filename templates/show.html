@@ -1,0 +1,259 @@
+﻿{% extends "base.html" %}
+{% load static %}
+{% load comment_tags %}
+
+{% block head %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <!-- /主体 -->
+    <div id="main-container" class="container clearfix">
+        <section class="post-left">
+            <div class="breadcrumb">您的位置： <a itemprop="breadcrumb" href="/">首页</a> » <a href="{% url 'blog:index' %}list-{{ show.category_id }}.html">{{ show.category.name }}</a> »
+                <span class="current">正文</div>
+            <div class="post-main clearfix">
+                <h1 class="post-title">{{ show.title }}</h1>
+                <div class="post-con clearfix">
+                    <div class="article-meta">
+                        <span class="item">分类：<a href="{% url 'blog:index' %}list-{{ show.category_id }}.html" rel="category tag">{{ show.category.name }}</a></span>
+                        <span class="item">作者：{{ show.auther }}</span>
+                        <span class="item">{{ show.created_time }}</span>
+                        <span class="item">阅读：{{ show.views }}</span>
+                        <span class="item">评论：{% get_comment_count show %}</span>
+
+                    </div>
+                    <article class="article-content">
+                    {{ show.content|safe }}
+                    </article>
+
+                    <div class="post-tag"><span class="fa fa-tags" aria-hidden="true"></span>标签：
+
+                        {% for tag in show.tags.all %}
+                            <a href="{% url 'blog:index' %}tag/{{ tag.name }}" rel="tag">{{ tag.name }}</a>
+                        {% endfor %}
+
+                    </div>
+                    <div>
+                        <div><b>上一篇：</b>
+                            {% if netx_blog %}
+                                <a href="/show-{{ netx_blog.pk }}.html" class="article-tag">{{ netx_blog }}</a>
+                            {% else %}
+                                没有了
+                            {% endif %}
+
+                        </div>
+                        <div><b>下一篇：</b>
+
+                            {% if previous_blog %}
+                                <a href="show-{{ previous_blog.pk }}.html" class="article-tag">{{ previous_blog }}</a>
+                            {% else %}
+                                没有了
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /文章 -->
+
+            <!-- 你可能感兴趣的文章 -->
+            <div class="recommend  hidden-xs">
+
+                <div class="head clearfix"><span class="sp">您可能感兴趣的:</span></div>
+                <ul>
+
+                    {% for h in interestTopic %}
+                    <li>
+                     <div class="pic">
+                       <a href="{% url 'blog:index' %}show-{{ h.id }}.html" title="{{ h.title }}">
+                       <img src="{% url 'blog:index' %}media/{{ h.img }}"
+                         srcset="{% url 'blog:index' %}media/{{ h.img }}"
+                         alt="{{ h.title }}" class="wp-post-image" width="145" height="100"/></a>
+                      </div>
+                        <a class="descript " href="{% url 'blog:index' %}show-{{ h.id }}.html" rel="bookmark"
+                               title="{{ h.title }}">{{ h.title }}</a>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+            <div class="comment">
+                <div class="head clearfix head_top">
+                    <span class="sp">评论列表:</span>
+                    <a class="want_comment" href="javascript:want_comment();"><button class="btn btn-info pull-right">我要评论</button></a>
+                </div>
+                    <div class="comment-area" style="margin: 0 20px">
+                        <div id="comment_list">
+                            {% get_comment_list show as comments %}
+                            {% for com in comments %}
+                                <div id="root_{{ com.pk }}" class="comment">
+                                    <span class="user">{{ com.user.username }}:</span>
+                                    <div id="comment_{{ com.pk }}" class="content_word">
+                                        {{ com.comment_text|safe }}
+                                    </div>
+                                    <div style="text-align: right">
+                                        <span>{{ com.comment_time |date:'Y年m月d日 H:i:s' }} </span>
+                                        <a href="javascript:reply({{ com.pk }});">回复</a>
+                                    </div>
+
+
+
+                                    {% for reply in com.root_comment.all %}
+                                        <div class="reply">
+                                            <div class="user">
+                                                <span>{{ reply.user.username }}</span>
+                                                <span>回复</span>
+                                                <span>{{ reply.reply_to.username }}: </span>
+                                            </div>
+                                            <div id="comment_{{ reply.pk }}" class="content_word">
+                                                {{ reply.comment_text|safe }}
+                                            </div>
+                                            <div style="text-align: right">
+                                                <span>{{ reply.comment_time |date:'Y年m月d日 H:i:s' }}</span>
+                                                <a href="javascript:reply({{ reply.pk }});">回复</a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% empty %}
+                                <span id="no_comment">暂无评论</span>
+                            {% endfor %}
+                        </div>
+
+
+                    </div>
+
+                    <div class="head clearfix head_top head_down"><span class="sp">新的评论:</span></div>
+                    <div class="comment-area new-comment" style="margin: 0 20px">
+
+                        {% if user.is_authenticated %}
+                            <form id="comment_form" action="{% url 'comment:upload_comment' %}" method="post" style="overflow: hidden">
+                                <label>{{ user.username }},欢迎评论~</label>
+                                <div id="reply_content_container" style="display: none">
+                                    <p>回复：</p>
+                                    <div id="reply_content"></div>
+                                </div>
+                                {% csrf_token %}
+                                {% get_comment_from show %}
+                                <span id="comment_error" class="text-danger pull-left"></span>
+                                <a href="javascript:clear_data();" class="btn btn-default pull-right comment_upload">清空</a>
+                                <input type="submit" value="提交" class="btn btn-info pull-right comment_upload">
+                            </form>
+                        {% else %}
+                            您尚未登录，登录后方可评论~
+                            <a class="btn btn-primary" href="{% url 'user:login' %}?from={{ request.get_full_path }}">登录</a>
+                            <span> or </span>
+                            <a class="btn btn-danger" href="{% url 'user:register' %}?from={{ request.get_full_path }}">注册</a>
+                        {% endif %}
+                    </div>
+
+            </div>
+
+        </section>
+
+
+
+
+       {% include "right.html" %}
+
+
+    </div>
+    <!-- /主体 -->
+
+{% endblock %}
+
+{% block script_extends %}
+    <script type="text/javascript">
+        $("#comment_form").submit(function() {
+            //判断评论框是否为空
+            $('#comment_error').text('');
+            if(CKEDITOR.instances["id_comment_text"].document.getBody().getText().trim()==''){
+                $('#comment_error').text('评论内容不能为空');
+                return false;
+            }
+
+            //更新数据到textarea
+            CKEDITOR.instances["id_comment_text"].updateElement();
+            //异步提交，使用ajax技术
+            $.ajax({
+                url: '{% url 'comment:upload_comment' %}',
+                type: 'POST',
+                data: $(this).serialize(),
+                cache: false,
+                success: function(data) {
+                    console.log(data);
+                    if (data['status'] == 'SUCCESS'){
+                        if($('#reply_comment_id').val()=='0'){
+                            //插入评论
+                            var comment_html = '<div id="root_' + data['pk'] +'" class="comment"><span class="user">' + data['username'] + '</span><div class="content_word" id="comment_'+ data['pk'] +'">'+ data['comment_text'] + '</div><div style="text-align: right"><span> ' + data['comment_time'] +' </span><a href="javascript:reply('+ data['pk'] + ');">回复</a></div>';
+                            $('#comment_list').prepend(comment_html);
+
+                        }else {
+                            //插入回复
+                            var reply_html =  '<div class="reply"><div class="user"><span>' + data['username'] + '</span><span> 回复 </span><span>'+ data['reply_to'] +': </span></div><div class="content_word" id="comment_'+ data['pk'] +'">'+ data['comment_text'] +'</div><div style="text-align: right"><span> '+ data['comment_time'] +'</span><a href="javascript:reply('+ data['pk'] +');">回复</a></div></div>';
+                            $("#root_" + data['root_pk']).append(reply_html);
+                        };
+
+                        //插入评论数据后，清空评论框的内容
+                        CKEDITOR.instances["id_comment_text"].setData('');
+                        $('#reply_content_container').hide();
+                        $('#reply_comment_id').val('0');
+                        $('#no_comment').remove();
+                        $('#comment_error').text('评论成功');
+
+                    }else {
+                        //显示错误信息
+                        $('#comment_error').text(data['message']);
+                    }
+
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+        function reply(reply_comment_id) {
+            //设置值
+            $('#reply_comment_id').val(reply_comment_id);
+            var html = $('#comment_' + reply_comment_id).html();
+            $('#reply_content').html(html);
+            $('#reply_content_container').show();
+
+            $('body').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function() {
+                CKEDITOR.instances['id_comment_text'].focus();
+            });
+        };
+        function want_comment() {
+            $('body').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function() {
+                CKEDITOR.instances['id_comment_text'].focus();
+            });
+        };
+        function clear_data() {
+            if(CKEDITOR.instances["id_comment_text"].document.getBody().getText().trim() !='') {
+                CKEDITOR.instances["id_comment_text"].setData('');
+            }
+        };
+        /*
+        function numFormat(num) {
+            return ('00' + num).substr(-2);
+        }
+        function timeFormat(timestamp) {
+            var datetime = new Date(timestamp * 1000);
+            var year = datetime.getFullYear();
+            var month = numFormat(datetime.getMonth() + 1);
+            var day = numFormat(datetime.getDay()+2);
+            var hour = numFormat(datetime.getHours());
+            var minute = numFormat(datetime.getMinutes());
+            var second = numFormat(datetime.getSeconds());
+            return year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
+        }
+         */
+    </script>
+{% endblock %}
